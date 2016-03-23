@@ -1,13 +1,15 @@
 // Copyright (c) 2016, <your name>. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('main_app.html')
-library dart_polymer.lib.main_app;		
+library dart_polymer.lib.main_app;
 
 import 'dart:html';
+import 'dart:convert';
 
 import 'package:polymer_elements/paper_input.dart';
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart';
+import 'package:json_object/json_object.dart';
 
 /// Uses [PaperInput]
 @PolymerRegister('main-app')
@@ -23,7 +25,18 @@ class MainApp extends PolymerElement {
     return text.split('').reversed.join('');
   }
 
-  // Optional lifecycle methods - uncomment if needed.
+  @reflectable
+  void handleClick(event, [_]) {
+    var httpRequest = new HttpRequest();
+    httpRequest.open('GET', 'http://jsonplaceholder.typicode.com/posts');
+    httpRequest.onLoadEnd.listen((e) {
+      var json = new JsonObject.fromJsonString(httpRequest.responseText);
+      print(json);
+    });
+    httpRequest.send('');
+  }
+
+// Optional lifecycle methods - uncomment if needed.
 
 //  /// Called when an instance of main-app is inserted into the DOM.
 //  attached() {
